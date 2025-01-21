@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2025-01-21)
+
+### Features
+
+* add script 5 ([63eb03d](https://github.com/maikonalexandre/github-packages-example/commit/63eb03de0670882d0da0a30ba9ee8708e738cf42))
+
 ## 1.1.2 (2025-01-21)
 
 ## 1.1.1 (2025-01-21)
