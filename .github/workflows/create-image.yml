@@ -5,9 +5,7 @@ on:
     branches:
       - main # Ou o branch de destino que você usa para gerenciar releases
     types:
-      - opened
-      - synchronize
-      - reopened
+      - closed
 
 jobs:
   build_and_publish:
