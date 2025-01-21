@@ -7,16 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set environment variables based on branch
-        run: |
-          if [[ "${GITHUB_REF##*/}" == "humolog" ]]; then
-            echo "IMAGE_NAME=my-sample-page-humolog" >> $GITHUB_ENV
-          elif [[ "${GITHUB_REF##*/}" == "main" ]]; then
-            echo "IMAGE_NAME=my-sample-page-main" >> $GITHUB_ENV
-          fi
-          echo "BRANCH=${GITHUB_REF##*/}"
       - name: Build and push image
         run: |
           docker login --username maikonalexandre --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build . --tag ghcr.io/maikonalexandre/${{env.IMAGE_NAME}}:latest
-          docker push ghcr.io/maikonalexandre/${{env.IMAGE_NAME}}:latest
+          docker build . --tag ghcr.io/maikonalexandre/github-packages-example:latest
+          docker push ghcr.io/maikonalexandre/github-packages-example:latest
