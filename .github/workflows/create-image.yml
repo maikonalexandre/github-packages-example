@@ -9,14 +9,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: Build and push image
-        run: |
-          docker login --username maikonalexandre --password ${{ secrets.GH_PAT }} ghcr.io
-          docker build . --tag ghcr.io/maikonalexandre/github-packages-example:latest
-          docker push ghcr.io/maikonalexandre/github-packages-example:latest
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: git config
         run: |
           git config user.name "${GITHUB_ACTOR}"
@@ -25,3 +17,13 @@ jobs:
       - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract tag
+        id: vars
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Build and push image
+        run: |
+          docker login --username maikonalexandre --password ${{ secrets.GH_PAT }} ghcr.io
+          docker build . --tag ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
+          docker push ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
