@@ -43,4 +43,8 @@
         }
       }
     }
-}}
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^9.0.4"
+  }
+}
