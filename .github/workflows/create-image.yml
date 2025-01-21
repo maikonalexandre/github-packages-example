@@ -1,6 +1,9 @@
 name: Docker image ci GHCR
 
-on: push
+on:
+  push:
+    branches:
+      - main # Ou o branch que você usa para gerar releases
 
 jobs:
   build_and_publish:
@@ -9,23 +12,28 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: git config
+
+      - name: Configuração do Git
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - run: npm install
-      - run: npm run release
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Criar release com release-it
+        run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      - name: Obter tag criada pelo release-it
+        id: extract_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0)
+          echo "TAG=$TAG" >> $GITHUB_ENV
 
-      - name: Build and push image
+      - name: Build e push da imagem Docker
         run: |
           docker login --username maikonalexandre --password ${{ secrets.GH_PAT }} ghcr.io
           docker build . --tag ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
           docker push ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
-        env:
-          TAG: ${{ env.TAG }}
