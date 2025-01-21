@@ -1,15 +1,20 @@
 name: Docker image ci GHCR
 
 on:
-  push:
+  pull_request:
     branches:
-      - main # Ou o branch que você usa para gerar releases
+      - main # Ou o branch de destino que você usa para gerenciar releases
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Permissão para o workflow criar tags
+
     steps:
       - uses: actions/checkout@v3
 
