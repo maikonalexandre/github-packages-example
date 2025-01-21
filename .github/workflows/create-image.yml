@@ -27,3 +27,5 @@ jobs:
           docker login --username maikonalexandre --password ${{ secrets.GH_PAT }} ghcr.io
           docker build . --tag ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
           docker push ghcr.io/maikonalexandre/github-packages-example:${{ env.TAG }}
+        env:
+          TAG: ${{ env.TAG }}
